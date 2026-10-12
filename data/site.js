@@ -27,7 +27,7 @@ export const site = {
   stats: [
     { value: "3 yrs", label: "building production web apps" },
     { value: "5", label: "payment platforms integrated end to end" },
-    { value: "DB → UI", label: "I own features from schema to screen" },
+    { value: "End to end", label: "I own features from database to screen" },
   ],
 
   sides: [
