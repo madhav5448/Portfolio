@@ -1,30 +1,12 @@
 import Image from "next/image";
 import Header from "../components/Header";
-import {
-  GitHubIcon,
-  LinkedInIcon,
-  MailIcon,
-  PhoneIcon,
-  DownloadIcon,
-  ArrowIcon,
-  PinIcon,
-} from "../components/Icons";
+import EventLog from "../components/EventLog";
+import { GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon, DownloadIcon, PinIcon } from "../components/Icons";
 import { site } from "../data/site";
-
-function SectionHead({ index, eyebrow, title, children }) {
-  return (
-    <div className="section-head">
-      <p className="eyebrow">
-        <span className="eyebrow-num">{index}</span> {eyebrow}
-      </p>
-      <h2>{title}</h2>
-      {children ? <p className="section-sub">{children}</p> : null}
-    </div>
-  );
-}
 
 export default function Home() {
   const year = new Date().getFullYear();
+  const [featured, ...others] = site.projects;
 
   return (
     <>
@@ -33,117 +15,123 @@ export default function Home() {
       <main id="top">
         {/* ── Hero ─────────────────────────────────────────── */}
         <section className="hero">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              {site.openToWork ? (
-                <p className="status">
-                  <span className="status-dot" aria-hidden="true" />
-                  {site.openToWorkText}
-                </p>
-              ) : null}
-              <h1>
-                {site.name}
-                <span className="hero-role">{site.role}</span>
-              </h1>
-              <p className="hero-headline">{site.headline}</p>
-              <p className="hero-intro">{site.intro}</p>
-
-              <div className="hero-actions">
-                <a className="btn btn-primary" href="#projects">
-                  View my work <ArrowIcon />
-                </a>
-                <a className="btn btn-ghost" href={site.resume} target="_blank" rel="noopener">
-                  <DownloadIcon /> Resume
-                </a>
-              </div>
-
-              <ul className="hero-meta">
-                <li>
-                  <PinIcon /> {site.location} · {site.timezone}
-                </li>
-                <li>
-                  <a href={`mailto:${site.email}`}>{site.email}</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="hero-photo">
-              <div className="photo-frame">
-                <Image
-                  src={site.photo}
-                  alt={`${site.name}, ${site.role}`}
-                  width={800}
-                  height={999}
-                  priority
-                  sizes="(max-width: 860px) 70vw, 380px"
-                />
-              </div>
-              <div className="photo-socials">
-                <a href={site.github} target="_blank" rel="noopener" aria-label="GitHub">
-                  <GitHubIcon />
-                </a>
-                <a href={site.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
-                  <LinkedInIcon />
-                </a>
-                <a href={`mailto:${site.email}`} aria-label="Email">
-                  <MailIcon />
-                </a>
-              </div>
-            </div>
-          </div>
-
           <div className="container">
-            <dl className="stats">
-              {site.stats.map((s) => (
-                <div key={s.label} className="stat">
-                  <dt>{s.value}</dt>
-                  <dd>{s.label}</dd>
+            <div className="hero-grid">
+              <div className="hero-copy">
+                {site.openToWork ? (
+                  <p className="status">
+                    <span className="status-dot" aria-hidden="true" />
+                    {site.openToWorkText}
+                  </p>
+                ) : null}
+
+                <h1 className="hero-name">
+                  <span>{site.firstName}</span>
+                  <span>{site.lastName}</span>
+                </h1>
+                <p className="hero-headline">{site.headline}</p>
+                <p className="hero-intro">{site.intro}</p>
+
+                <div className="hero-actions">
+                  <a className="btn btn-primary" href="#projects">
+                    See my work
+                  </a>
+                  <a className="btn btn-ghost" href={site.resume} target="_blank" rel="noopener">
+                    <DownloadIcon /> Download resume
+                  </a>
+                </div>
+
+                <ul className="hero-links">
+                  <li>
+                    <PinIcon /> {site.location}
+                  </li>
+                  <li>
+                    <a href={site.github} target="_blank" rel="noopener">
+                      <GitHubIcon /> GitHub
+                    </a>
+                  </li>
+                  <li>
+                    <a href={site.linkedin} target="_blank" rel="noopener">
+                      <LinkedInIcon /> LinkedIn
+                    </a>
+                  </li>
+                  <li>
+                    <a href={`mailto:${site.email}`}>
+                      <MailIcon /> Email
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="hero-photo">
+                <div className="photo-block" aria-hidden="true" />
+                <div className="photo-frame">
+                  <Image
+                    src={site.photo}
+                    alt={`${site.name}, ${site.role}`}
+                    width={800}
+                    height={999}
+                    priority
+                    sizes="(max-width: 900px) 72vw, 400px"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <dl className="facts">
+              {site.facts.map((f) => (
+                <div key={f.value} className="fact">
+                  <dt>{f.value}</dt>
+                  <dd>{f.label}</dd>
                 </div>
               ))}
             </dl>
+
+            <EventLog log={site.heroPanel} />
           </div>
         </section>
 
-        {/* ── About / What I do ───────────────────────────── */}
+        {/* ── About ────────────────────────────────────────── */}
         <section id="about" className="section">
           <div className="container">
-            <SectionHead index="01" eyebrow="About" title="Backend first, comfortable across the stack">
-              I usually own a feature end to end: the table design, the API, the background job and the
-              React screen on top.
-            </SectionHead>
+            <h2 className="section-title">What I work on</h2>
+            <p className="section-sub">
+              I usually own a feature from end to end: the table design, the API, the background job and the React
+              screen on top.
+            </p>
             <div className="sides">
               {site.sides.map((side) => (
-                <article key={side.tag} className="card side">
-                  <p className="tag">{side.tag}</p>
+                <div key={side.title} className="side">
                   <h3>{side.title}</h3>
-                  <ul className="ticks">
+                  <p className="side-lead">{side.lead}</p>
+                  <ul className="list">
                     {side.points.map((p) => (
                       <li key={p}>{p}</li>
                     ))}
                   </ul>
-                </article>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         {/* ── Experience ───────────────────────────────────── */}
-        <section id="experience" className="section section-alt">
+        <section id="experience" className="section section-tint">
           <div className="container">
-            <SectionHead index="02" eyebrow="Experience" title="Where I've worked" />
+            <h2 className="section-title">Experience</h2>
             <ol className="timeline">
               {site.experience.map((job) => (
                 <li key={job.company} className="job">
-                  <div className="job-side">
+                  <div className="job-when">
                     <p className="job-period">{job.period}</p>
                     <p className="job-place">{job.place}</p>
                   </div>
                   <div className="job-body">
                     <h3>
-                      {job.role} <span className="at">at</span> {job.company}
+                      {job.role}, <span className="job-company">{job.company}</span>
                     </h3>
                     <p className="job-summary">{job.summary}</p>
-                    <ul className="ticks">
+                    <ul className="list">
                       {job.points.map((p) => (
                         <li key={p}>{p}</li>
                       ))}
@@ -158,22 +146,44 @@ export default function Home() {
         {/* ── Projects ─────────────────────────────────────── */}
         <section id="projects" className="section">
           <div className="container">
-            <SectionHead index="03" eyebrow="Projects" title="Selected work">
-              Client names are kept private. Happy to go deep on any of these in an interview.
-            </SectionHead>
+            <h2 className="section-title">Selected work</h2>
+            <p className="section-sub">Client names are kept private. Happy to go deep on any of these in an interview.</p>
+
+            <article className="feature">
+              <div className="feature-copy">
+                <p className="kind">{featured.kind}</p>
+                <h3>{featured.title}</h3>
+                <p className="feature-blurb">{featured.blurb}</p>
+                <ul className="tags" aria-label="Tech stack">
+                  {featured.stack.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ul>
+              </div>
+              <ul className="feature-points">
+                {featured.points.map((p) => (
+                  <li key={p}>
+                    <span className="check" aria-hidden="true">
+                      ✓
+                    </span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </article>
+
             <div className="projects">
-              {site.projects.map((p) => (
-                <article key={p.slug} className="card project">
-                  <p className="tag">{p.label}</p>
+              {others.map((p) => (
+                <article key={p.slug} className="project">
+                  <p className="kind">{p.kind}</p>
                   <h3>{p.title}</h3>
-                  <p className="project-client">{p.client}</p>
                   <p className="project-blurb">{p.blurb}</p>
-                  <ul className="ticks">
+                  <ul className="list list-small">
                     {p.points.map((pt) => (
                       <li key={pt}>{pt}</li>
                     ))}
                   </ul>
-                  <ul className="chips" aria-label="Tech stack">
+                  <ul className="tags" aria-label="Tech stack">
                     {p.stack.map((s) => (
                       <li key={s}>{s}</li>
                     ))}
@@ -185,14 +195,14 @@ export default function Home() {
         </section>
 
         {/* ── Skills ───────────────────────────────────────── */}
-        <section id="skills" className="section section-alt">
+        <section id="skills" className="section section-tint">
           <div className="container">
-            <SectionHead index="04" eyebrow="Skills" title="Tools I use every day" />
+            <h2 className="section-title">Skills</h2>
             <div className="skills">
               {site.skills.map((g) => (
                 <div key={g.group} className="skill-row">
                   <h3>{g.group}</h3>
-                  <ul className="chips">
+                  <ul className="tags">
                     {g.items.map((i) => (
                       <li key={i}>{i}</li>
                     ))}
@@ -202,88 +212,60 @@ export default function Home() {
             </div>
 
             <div className="split">
-              <article className="card ai-card">
-                <p className="tag">AI workflow</p>
+              <div className="split-block">
                 <h3>{site.ai.title}</h3>
                 <p>{site.ai.text}</p>
-                <ul className="ticks">
-                  {site.ai.points.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-              </article>
-
-              <article className="card">
-                <p className="tag">Education</p>
-                <h3>Background</h3>
+              </div>
+              <div className="split-block">
+                <h3>Education</h3>
                 <ul className="edu">
                   {site.education.map((e) => (
                     <li key={e.title}>
                       <p className="edu-title">{e.title}</p>
                       <p className="edu-meta">
-                        {e.place} · {e.period}
+                        {e.place}, {e.period}
                       </p>
                     </li>
                   ))}
                 </ul>
-              </article>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Contact ──────────────────────────────────────── */}
-        <section id="contact" className="section">
+        <section id="contact" className="contact">
           <div className="container">
-            <div className="contact">
-              <div>
-                <p className="eyebrow">
-                  <span className="eyebrow-num">05</span> Contact
-                </p>
-                <h2>Let's talk</h2>
-                <p className="section-sub">
-                  I'm looking for full-time full stack roles: remote, hybrid or on-site. The quickest way to
-                  reach me is email.
-                </p>
-              </div>
-              <ul className="contact-list">
-                <li>
-                  <a href={`mailto:${site.email}`}>
-                    <MailIcon />
-                    <span>
-                      <small>Email</small>
-                      {site.email}
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href={site.phoneHref}>
-                    <PhoneIcon />
-                    <span>
-                      <small>Phone</small>
-                      {site.phone}
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href={site.linkedin} target="_blank" rel="noopener">
-                    <LinkedInIcon />
-                    <span>
-                      <small>LinkedIn</small>
-                      madhav-sharma
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href={site.github} target="_blank" rel="noopener">
-                    <GitHubIcon />
-                    <span>
-                      <small>GitHub</small>
-                      madhav5448
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <h2 className="contact-title">Hiring for a full stack role? Let's talk.</h2>
+            <p className="contact-sub">
+              Open to remote, hybrid or on-site roles in Indore, Pune, Hyderabad, Noida and Gurugram. Email is the
+              quickest way to reach me.
+            </p>
+            <a className="contact-email" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>
+            <ul className="contact-links">
+              <li>
+                <a href={site.phoneHref}>
+                  <PhoneIcon /> {site.phone}
+                </a>
+              </li>
+              <li>
+                <a href={site.linkedin} target="_blank" rel="noopener">
+                  <LinkedInIcon /> {site.linkedinLabel}
+                </a>
+              </li>
+              <li>
+                <a href={site.github} target="_blank" rel="noopener">
+                  <GitHubIcon /> {site.githubLabel}
+                </a>
+              </li>
+              <li>
+                <a href={site.resume} target="_blank" rel="noopener">
+                  <DownloadIcon /> Resume (PDF)
+                </a>
+              </li>
+            </ul>
           </div>
         </section>
       </main>
@@ -294,7 +276,7 @@ export default function Home() {
             © {year} {site.name}
           </p>
           <p>
-            Built with Next.js · <a href={site.resume} target="_blank" rel="noopener">Download resume</a>
+            {site.location}, {site.timezone}
           </p>
         </div>
       </footer>

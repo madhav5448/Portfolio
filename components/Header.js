@@ -31,6 +31,17 @@ export default function Header({ name, resume }) {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    const mq = window.matchMedia("(min-width: 861px)");
+    const onWide = (e) => e.matches && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    mq.addEventListener("change", onWide);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+      mq.removeEventListener("change", onWide);
+    };
   }, [open]);
 
   function toggleTheme() {
@@ -48,14 +59,14 @@ export default function Header({ name, resume }) {
     .join("");
 
   return (
-    <header className={`header ${scrolled ? "is-scrolled" : ""}`}>
+    <header className={`header ${scrolled ? "is-scrolled" : ""} ${open ? "menu-open" : ""}`}>
       <div className="container header-inner">
-        <a href="#top" className="brand" aria-label={`${name}, back to top`}>
+        <a href="#top" className="brand" aria-label={`${name}, back to top`} onClick={() => setOpen(false)}>
           <span className="brand-mark">{initials}</span>
           <span className="brand-name">{name}</span>
         </a>
 
-        <nav className={`nav ${open ? "is-open" : ""}`} aria-label="Main">
+        <nav id="site-nav" className={`nav ${open ? "is-open" : ""}`} aria-label="Main">
           {links.map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
               {l.label}
@@ -102,6 +113,7 @@ export default function Header({ name, resume }) {
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="site-nav"
           >
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               {open ? (

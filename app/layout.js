@@ -1,9 +1,10 @@
-import "@fontsource-variable/manrope";
+import "@fontsource-variable/bricolage-grotesque";
+import "@fontsource-variable/instrument-sans";
 import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 import { site } from "../data/site";
 
-const description = `${site.name}: ${site.role} in ${site.location}. React, Node.js, Express, MySQL and AWS, with deep experience in payment integrations and webhooks.`;
+const description = `${site.name}: ${site.role} in ${site.location}. Builds React apps and Node.js APIs with Express, MySQL and AWS, from the database to the UI.`;
 
 export const metadata = {
   metadataBase: new URL(site.url),
@@ -13,6 +14,7 @@ export const metadata = {
     site.name,
     "Full Stack Developer",
     "MERN developer",
+    "React and Node.js developer",
     "Node.js developer",
     "React developer",
     "Next.js",
@@ -41,8 +43,8 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1116" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f6fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1428" },
   ],
 };
 
